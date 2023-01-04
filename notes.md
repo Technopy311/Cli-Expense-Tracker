@@ -21,10 +21,11 @@ This app will be CLi based, and then made GUI with Tkinter
 To save the expenses,  will use a simple txt file as DB.
 and each line will contain 1 expense
 
+The dabatabase file will be saved as a .etdb (expense tracker data base).
 
 ## Flow
-    When the app initializes, it will check if the database file exists,
-    if it does, it will pass to the mainloop.
+    When the app initializes, it will check if any database file exists,
+    if it does, it will ask the user which db to use, then pass to the mainloop.
 
     If there's none DB, it will create one by asking the user:
         - Name for the DB.
@@ -33,7 +34,7 @@ and each line will contain 1 expense
     After that, it will pass to the mainloop.
 
 ### Main loop
-    The main loop will be an infinite loop, that allows the user to access the crud,
+    The main loop will be an infinite loop, that allows the user to access the crud of the designated db,
     this by showing in a menu the 4 options (by using numbers from 1-4).
     Each of these options will execute an specific function of the crud.
 
@@ -59,6 +60,6 @@ and each line will contain 1 expense
         - description -> string.
 
 #### Read
-    
+
 #### Update
 #### Delete
