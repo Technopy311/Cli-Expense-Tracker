@@ -34,13 +34,31 @@ and each line will contain 1 expense
 
 ### Main loop
     The main loop will be an infinite loop, that allows the user to access the crud,
-    this by showing in a menu the 4 options.
+    this by showing in a menu the 4 options (by using numbers from 1-4).
     Each of these options will execute an specific function of the crud.
 
 
 ### The CRUD
 
 #### Create
+    To add a new expense, the function will ask the user:
+        - Expense name.
+        - Amount.
+        - Brief Description.
+    
+    Then the function will open the DB, count the amount of lines (to create an auto generated ID column)
+    an add to the last line the information with the following format:
+
+    id;expense-name;amount;description;
+
+
+    Data type:
+        - id -> int.
+        - expense-name -> string.
+        - amount -> int (this is because the chilean peso does not use decimals).
+        - description -> string.
+
 #### Read
+    
 #### Update
 #### Delete
