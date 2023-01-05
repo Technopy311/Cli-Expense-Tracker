@@ -1,14 +1,14 @@
 from datetime import datetime
 from os import getcwd, path, listdir
-import logging 
+# import logging 
 
 
-logging.basicConfig(format='%(levelname)s- %(asctime)s - %(message)s', level=logging.DEBUG)
+# logging.basicConfig(format='%(levelname)s- %(asctime)s - %(message)s', level=# logging.DEBUG)
 
 path = f"{getcwd()}\\"
 
 def addexpense(database):
-    # logging.debug("Add expense function called")
+    # # logging.debug("Add expense function called")
     print("\n### Añadir un gasto ###")
 
     expense = input("Ingrese el nombre del gasto: ")
@@ -16,13 +16,13 @@ def addexpense(database):
     description = input("Escriba una pequeña descripción: ")
 
     with open (f"{path}{database}", 'a') as db:
-        logging.debug(f"Opened DB: {database}")
+        # logging.debug(f"Opened DB: {database}")
         db.write(f"\n{expense};{amount};{description}")
-        # logging.debug(f"Wrote in the DB: {expense};{amount};{description}")
+        # # logging.debug(f"Wrote in the DB: {expense};{amount};{description}")
 
 
 def showexpense(database):
-    # logging.debug("Show expenses function called")
+    # # logging.debug("Show expenses function called")
     print("\n### Mostrar los Gastos ###\n")
     print("#  ID    Nombre    Cantidad    Descripción\n")
     sum = 0
@@ -31,13 +31,13 @@ def showexpense(database):
         for index, line in enumerate(db):
             if index == 0:
                 header = line.split("#")
-                # logging.debug(f"Structure: {line.split('#')}")
+                # # logging.debug(f"Structure: {line.split('#')}")
                 #print(f"## {header[0]} ## {header[1]} ## {header[2]} ##")
             elif line == "" or line =="\n":
                 print("  No hay gastos registrados")
             else:
                 parsed = line.split(";")
-                # logging.debug(f"parsed line: {parsed}")
+                # # logging.debug(f"parsed line: {parsed}")
                 print(f"  {index}  {parsed[0]}  {parsed[1]}  {parsed[2]}")
                 sum += int(parsed[1])
 
@@ -45,17 +45,18 @@ def showexpense(database):
 
 
 def deleteexpense(database):
-    logging.debug("Delete expense function called")
+    pass
+    # logging.debug("Delete expense function called")
 
 
 def checkDb(path):
     files = listdir(path)
 
     for file in files:
-        logging.debug("File: " + str(file))
+        # logging.debug("File: " + str(file))
 
         if ".etdb" in file:
-            logging.warning("DB FOUND!: " + str(file))
+            # logging.warning("DB FOUND!: " + str(file))
             return True
 
     return False
@@ -88,14 +89,15 @@ def availabledbs():
 def main():
     print("\n#### Bienvenido al contador de Gastos ####\n\n")
 
-    logging.debug("App Path: " + path)
+    # logging.debug("App Path: " + path)
 
     existing = checkDb(path)
 
     if existing:
-        logging.debug("Found at least 1 db file.")
+        pass
+        # logging.debug("Found at least 1 db file.")
     else:
-        logging.debug("Did not find any etdb file.")
+        # logging.debug("Did not find any etdb file.")
         createDb()
 
     print("### Base de Datos disponibles ###\n")
@@ -113,10 +115,10 @@ def main():
         elif int(option) == 3:
             deleteexpense(userdb)
         else:
-            logging.debug(f"Option not recognized: {option}")
+            # logging.debug(f"Option not recognized: {option}")
             pass
 
-        
+
 
 if __name__ == "__main__":
     try:
