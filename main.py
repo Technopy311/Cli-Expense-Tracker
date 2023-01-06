@@ -31,7 +31,7 @@ def addexpense(database):
 
 
 def showexpense(database):
-    # # logging.debug("Show expenses function called")
+    # logging.debug("Show expenses function called")
     print("\n### Mostrando los Gastos ###\n")
     print("#  ID    Nombre    Cantidad    Descripción\n")
     sum = 0
@@ -74,27 +74,29 @@ def deleteexpense(database):
     with open ((currentpath + database), "r") as readdb:
         
         for index, line in enumerate(readdb):
-            logging.debug(f"Current Index: {index}")
-            logging.debug(f"Line Content: {line}")
+            # logging.debug(f"Current Index: {index}")
+            # logging.debug(f"Line Content: {line}")
             
             
             if line == "" or line =="\n":
-                logging.debug("Line = nothing or \\n")
+                # logging.debug("Line = nothing or \\n")
+                pass
             elif index == id:
-                logging.debug("Line = id")
+                # logging.debug("Line = id")
+                pass
             else:
-                logging.debug("Line else")
+                # logging.debug("Line else")
                 saving = f"{saving}{line}"
-                logging.debug(f"Saving Content: {saving}")
+                # logging.debug(f"Saving Content: {saving}")
 
-        logging.debug("For loop finished")
+        # logging.debug("For loop finished")
 
     with open ((currentpath + database), "w") as writedb:
-        logging.debug("File opened to write")
+        # logging.debug("File opened to write")
         writedb.write(saving)
-        logging.debug(f"File wrote: {saving}")
+        # logging.debug(f"File wrote: {saving}")
     
-    logging.debug("Ended function")
+    # logging.debug("Ended function")
 
 
 
