@@ -1,43 +1,54 @@
 from datetime import datetime
 from os import getcwd, path, listdir
-# import logging 
+import logging 
 
 
-# logging.basicConfig(format='%(levelname)s- %(asctime)s - %(message)s', level=# logging.DEBUG)
+logging.basicConfig(format='%(levelname)s- %(asctime)s - %(message)s', level=logging.DEBUG)
 
-path = f"{getcwd()}\\"
+currentpath = f"{getcwd()}\\"
+print(currentpath)
 
 def addexpense(database):
-    # # logging.debug("Add expense function called")
+    # logging.debug("Add expense function called")
     print("\n### Añadir un gasto ###")
 
     expense = input("Ingrese el nombre del gasto: ")
     amount = input("Ingrese la cantidad gastada (sin puntos o comas): ")
     description = input("Escriba una pequeña descripción: ")
 
-    with open (f"{path}{database}", 'a') as db:
+    try:
+        amount = int(amount)
+
+    except ValueError:
+        print("La cantidad del gasto debe ser un número!")
+        return
+
+    with open ((currentpath + database), 'a') as db:
         # logging.debug(f"Opened DB: {database}")
+
         db.write(f"\n{expense};{amount};{description}")
-        # # logging.debug(f"Wrote in the DB: {expense};{amount};{description}")
+        # logging.debug(f"Wrote in the DB: {expense};{amount};{description}")
 
 
 def showexpense(database):
     # # logging.debug("Show expenses function called")
-    print("\n### Mostrar los Gastos ###\n")
+    print("\n### Mostrando los Gastos ###\n")
     print("#  ID    Nombre    Cantidad    Descripción\n")
     sum = 0
 
-    with open (f"{path}{database}", "r") as db:
+    # logging.debug("Database currentpath: " + currentpath + database)
+
+    with open ((currentpath + database), "r") as db:
         for index, line in enumerate(db):
             if index == 0:
                 header = line.split("#")
-                # # logging.debug(f"Structure: {line.split('#')}")
-                #print(f"## {header[0]} ## {header[1]} ## {header[2]} ##")
+                # logging.debug(f"Structure: {line.split('#')}")
+
             elif line == "" or line =="\n":
-                print("  No hay gastos registrados")
+                pass
             else:
                 parsed = line.split(";")
-                # # logging.debug(f"parsed line: {parsed}")
+                # logging.debug(f"parsed line: {parsed}")
                 print(f"  {index}  {parsed[0]}  {parsed[1]}  {parsed[2]}")
                 sum += int(parsed[1])
 
@@ -45,12 +56,51 @@ def showexpense(database):
 
 
 def deleteexpense(database):
-    pass
+
     # logging.debug("Delete expense function called")
+    print("## Eliminar gasto ##")
+    showexpense(database)
+    id = input("Ingrese el ID del gasto a eliminar")
+
+    try:
+        id = int(id)
+    except ValueError:
+        print("Valor de ID no válido")
+        return
+
+    saving = ""
 
 
-def checkDb(path):
-    files = listdir(path)
+    with open ((currentpath + database), "r") as readdb:
+        
+        for index, line in enumerate(readdb):
+            logging.debug(f"Current Index: {index}")
+            logging.debug(f"Line Content: {line}")
+            
+            
+            if line == "" or line =="\n":
+                logging.debug("Line = nothing or \\n")
+            elif index == id:
+                logging.debug("Line = id")
+            else:
+                logging.debug("Line else")
+                saving = f"{saving}{line}"
+                logging.debug(f"Saving Content: {saving}")
+
+        logging.debug("For loop finished")
+
+    with open ((currentpath + database), "w") as writedb:
+        logging.debug("File opened to write")
+        writedb.write(saving)
+        logging.debug(f"File wrote: {saving}")
+    
+    logging.debug("Ended function")
+
+
+
+
+def checkDb(currentpath):
+    files = listdir(currentpath)
 
     for file in files:
         # logging.debug("File: " + str(file))
@@ -63,11 +113,10 @@ def checkDb(path):
 
 
 def createDb():
-    print("No se encontró alguna base de datos, creando una.")
     dbname = input("Escriba el nombre de la base de datos: ")
     dbdescription = input("Escriba una breve descripción: ")
 
-    file = f"{path}{dbname}.etdb"
+    file = f"{currentpath}{dbname}.etdb"
     
     with open(file, "x") as database:
         database.write(f"Nombre: {dbname} ")
@@ -78,7 +127,7 @@ def createDb():
 
 
 def availabledbs():
-    files = listdir(path)
+    files = listdir(currentpath)
 
     for file in files:
         if ".etdb" in file:
@@ -89,22 +138,51 @@ def availabledbs():
 def main():
     print("\n#### Bienvenido al contador de Gastos ####\n\n")
 
-    # logging.debug("App Path: " + path)
+    # logging.debug("App Path: " + currentpath)
 
-    existing = checkDb(path)
+    existing = checkDb(currentpath)
 
-    if existing:
+
+    if not existing:
+        print("### No se encontró ninguna base de datos, creando una ###")
+        createDb()
+        # logging.debug("Did not find any etdb file.")
+
+    else:
         pass
         # logging.debug("Found at least 1 db file.")
-    else:
-        # logging.debug("Did not find any etdb file.")
-        createDb()
+
 
     print("### Base de Datos disponibles ###\n")
+
     availabledbs()
 
+
+    newdb = input("\n Desea crear una nueva base de datos? Si(1) No(2): ")
+
+    if newdb == "1":
+        # logging.debug(f"Creating New DB, option: {newdb}")
+        createDb()
+    elif newdb == "2":
+        # logging.debug(f"Creating New DB, option: {newdb}")
+        pass
+    else:
+        # logging.debug(f"Option not recognized: {newdb}")
+        print("Opción no reconocida, ejecutando menu...\n\n")
+
+
     userdb = input("\n### Escriba el nombre de la base de datos a utilizar ###\nEj: testing.etdb\n\nBASE DE DATOS: ")
+
+    if path.isfile(f"{currentpath}{userdb}"):
+        pass
+    else:
+        print("### El nombre de la base de datos, no es válido.")
+        return
+
+
+
     print("\n ### Menu de Usuario ### \n")
+    
     while True:
         option = input("Opciones:\n + Añadir Gasto (1).    + Ver los gastos (2).\n + Eliminar Gasto(3). \n\nIngrese Nro de opción: ")
 
